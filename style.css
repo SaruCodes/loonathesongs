@@ -26,29 +26,34 @@ body {
     color: #333;
 }
 
-
 header {
     background-color: #ffff;
     padding: 20px;
     font-size: 24px;
     border-bottom: solid 1pt #D74497;
-    display: flex;     
+    display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    transition: max-width 0.3s ease;
 }
 
 header img {
-    max-width: 300px;
+    max-width: 350px; /* Ajusta el tamaño máximo según lo que consideres apropiado */
+    padding: 10px;
     height: auto;
+    display: block; /* Asegura que el elemento de la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra la imagen horizontalmente */
 }
 
-
+/* Estilos para la barra de navegación */
 nav {
     background: #ffff;
     padding: 15px;
     display: flex;
     justify-content: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 nav button {
@@ -75,10 +80,14 @@ nav button.active-button {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#song-list{
+#song-list {
     width: 80%;
     margin-top: 40px;
-    margin-left: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Contenedor de cada canción */
@@ -94,7 +103,6 @@ nav button.active-button {
     transform: scale(1.05);
 }
 
-
 .song-img {
     width: 300px;
     height: 200px;
@@ -108,7 +116,7 @@ nav button.active-button {
     margin-top: 5px;
 }
 
-
+/* Overlay del video */
 #video-overlay {
     position: fixed;
     top: 0;
@@ -123,19 +131,36 @@ nav button.active-button {
 }
 
 #video-container {
-    position: relative;
-    background: #000;
-    padding: 10px;
-    border-radius: 10px;
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.9); /* Más opaco para que cubra mejor */
 }
 
 #video-container iframe {
-    width: 800px;
-    height: 500px;
+    width: 80vw;
+    height: 45vw; /* Mantiene la relación 16:9 */
+    max-width: 900px;
+    max-height: 506px;
 }
 
+.video-wrapper {
+    width: 80vw;
+    height: 45vw;
+    max-width: 900px;
+    max-height: 506px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
 
+/* Estilos para cuando una canción está resaltada */
 .song-container.resaltar .song-img {
     border: 5px solid #D74497;
     filter: brightness(1.1);
@@ -152,7 +177,7 @@ nav button.active-button {
     transform: scale(1.1);
 }
 
-
+/* Estilos para el botón de cerrar */
 #boton-cerrar {
     position: absolute;
     top: -10px;
@@ -165,3 +190,63 @@ nav button.active-button {
     font-size: 16px;
 }
 
+/* Media queries para adaptar el diseño a dispositivos móviles */
+@media (max-width: 768px) {
+    header img {
+        max-width: 60%; 
+    }
+
+    nav button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    #song-list {
+        width: 90%;
+    }
+
+    .song-container {
+        width: 45%;
+        margin: 10px;
+    }
+
+    .song-img {
+        width: 100%;
+        height: auto;
+    }
+
+    #video-container iframe {
+        width: 90vw;
+        height: 50vw;
+    }
+}
+
+@media (max-width: 480px) {
+    nav button {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .song-container {
+        width: 90%;
+        margin: 8px 0;
+    }
+
+    .song-img {
+        width: 100%;
+        height: 180px;
+    }
+
+    #video-container iframe {
+        width: 90vw;
+        height: 50vw;
+    }
+
+    header {
+        padding: 15px;
+    }
+
+    header img {
+        max-width: 50%;
+    }
+}

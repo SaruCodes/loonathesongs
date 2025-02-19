@@ -52,18 +52,21 @@ $(document).ready(function () {
 
         if ($(this).parent().hasClass("resaltar")) {
             let videoUrl = $(this).parent().data("video").replace("youtu.be/", "www.youtube.com/embed/");
+            let params = "?autoplay=1&controls=1&rel=0";
 
             let $video = $('<iframe title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>');
-            $video.attr("src", videoUrl + "?autoplay=1&controls=0"); //REVISAR AUTOPLAY
+            $video.attr("src", videoUrl + params);
             $video.addClass("video");
             $("body").append(`
                 <div id="video-overlay">
                     <div id="video-container">
-                        ${$video[0].outerHTML}
-                        <button id="noResaltada">Cerrar</button>
+                        <div class="video-wrapper">
+                            ${$video[0].outerHTML}
+                        </div>
+                        <button id="boton-cerrar" class="boton-cerrar">Cerrar</button>
                     </div>
                 </div>
-            `);
+            `);            
 
             let initialWidth = 0;
             let initialHeight = 0;
@@ -73,16 +76,15 @@ $(document).ready(function () {
                 position: "fixed",
                 top: imgOffset.top,
                 left: imgOffset.left,
-                width: initialWidth + "px",  // El ancho inicial es 0
-                height: initialHeight + "px",  // El alto inicial es 0
-                zIndex: 20
+                width: initialWidth + "px", 
+                height: initialHeight + "px",  
             });
 
             // Animamos el iframe a un tamaño final centrado en la pantalla con una relación de 16:9
-            let finalWidth = $(window).width() * 0.5;  // El iframe ocupará el 70% del ancho de la ventana
-            let finalHeight = finalWidth * 0.5625;  // El alto se ajusta para mantener la relación 16:9
-            let finalTop = ($(window).height() - finalHeight) / 2;  // Lo centramos verticalmente
-            let finalLeft = ($(window).width() - finalWidth) / 2;  // Lo centramos horizontalmente
+            let finalWidth = $(window).width() * 0.5; 
+            let finalHeight = finalWidth * 0.5625;
+            let finalTop = ($(window).height() - finalHeight) / 2; 
+            let finalLeft = ($(window).width() - finalWidth) / 2;
 
             // Animamos el iframe desde su tamaño inicial hasta el tamaño final
             $("#video-container").animate({
