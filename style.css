@@ -66,13 +66,6 @@ nav button {
     position: relative;
 }
 
-nav button:hover {
-    border-bottom: 2px solid #d74497d5;
-    color: #fff;
-    background-color: #d74497c0;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 #song-list {
     width: 80%;
     margin-top: 40px;
@@ -88,7 +81,6 @@ nav button:hover {
     display: inline-block;
     text-align: center;
     margin: 15px;
-    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
