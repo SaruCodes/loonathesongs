@@ -1,4 +1,4 @@
-$(document).ready(function () {
+window.onload = function () {
     let datosJson = [];
 
     // Cargar los datos del JSON usando AJAX
@@ -33,7 +33,7 @@ $(document).ready(function () {
 
     // Filtrar canciones por subunidad cuando se hace clic en un botón de navegación
     $("nav button").click(function () {
-        let subunit = $(this).text(); 
+        let subunit = $(this).text();
         $("nav button").removeClass("active-button");
         $(this).addClass("active-button");
 
@@ -47,7 +47,37 @@ $(document).ready(function () {
         });
     });
 
-    // Mostrar el video con animación y sin ocupar toda la pantalla
+    // Animación consistente para los botones del nav (hover y pulsados)
+    $("nav button").hover(
+        function () {
+            $(this).stop().animate({ backgroundColor: "#d74497c0", color: "#fff", transform: "scale(1.05)" }, 300);
+        },
+        function () {
+            if (!$(this).hasClass("active-button")) {
+                $(this).stop().animate({ backgroundColor: "#fff", color: "#D74497", transform: "scale(1)" }, 300);
+            }
+        }
+    );
+
+    $("nav button").click(function () {
+        $("nav button").removeClass("active-button").css({
+            backgroundColor: "#fff",
+            color: "#D74497",
+            borderBottom: "none",
+        });
+
+        $(this).addClass("active-button").css({
+            backgroundColor: "#d74497c0",
+            color: "#fff",
+            borderBottom: "2px solid #d74497d5",
+        });
+
+        $(this).stop().animate({ transform: "scale(1.1)" }, 100, function () {
+            $(this).stop().animate({ transform: "scale(1)" }, 100);
+        });
+    });
+
+    // Mostrar video con animación y sin ocupar toda la pantalla
     $(document).on("click", ".song-img", function () {
 
         if ($(this).parent().hasClass("resaltar")) {
@@ -57,6 +87,7 @@ $(document).ready(function () {
             let $video = $('<iframe title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>');
             $video.attr("src", videoUrl + params);
             $video.addClass("video");
+
             $("body").append(`
                 <div id="video-overlay">
                     <div id="video-container">
@@ -65,8 +96,9 @@ $(document).ready(function () {
                         </div>
                         <button id="boton-cerrar" class="boton-cerrar">Cerrar</button>
                     </div>
+                    <div id="close-instruction" class="instruction">Pulse Esc para cerrar</div>
                 </div>
-            `);            
+            `);
 
             let initialWidth = 0;
             let initialHeight = 0;
@@ -76,14 +108,14 @@ $(document).ready(function () {
                 position: "fixed",
                 top: imgOffset.top,
                 left: imgOffset.left,
-                width: initialWidth + "px", 
-                height: initialHeight + "px",  
+                width: initialWidth + "px",
+                height: initialHeight + "px",
             });
 
             // Animamos el iframe a un tamaño final centrado en la pantalla con una relación de 16:9
-            let finalWidth = $(window).width() * 0.5; 
+            let finalWidth = $(window).width() * 0.5;
             let finalHeight = finalWidth * 0.5625;
-            let finalTop = ($(window).height() - finalHeight) / 2; 
+            let finalTop = ($(window).height() - finalHeight) / 2;
             let finalLeft = ($(window).width() - finalWidth) / 2;
 
             // Animamos el iframe desde su tamaño inicial hasta el tamaño final
@@ -96,14 +128,14 @@ $(document).ready(function () {
         }
     });
 
-    //Cerrar el video (click en boton, en el fondo y esc)
+    // Cerrar video (click en boton, en el fondo y esc)
     $(document).on("click", "#boton-cerrar", function () {
         $("#video-overlay").remove();
     });
 
     $(document).on("click", "#video-overlay", function (e) {
         if (e.target === this) {  // Si el clic fue fuera del iframe
-            $("#video-overlay").remove(); 
+            $("#video-overlay").remove();
         }
     });
 
@@ -113,10 +145,10 @@ $(document).ready(function () {
         }
     });
 
-    //Mostrar todo cuando presionas el logo
+    // Mostrar todo cuando presionas el logo
     $("header img").click(function () {
         $("nav button").removeClass("active-button");
         mostrarCanciones(datosJson);
         $(".song-container").removeClass("resaltar noResaltada");
     });
-});
+};

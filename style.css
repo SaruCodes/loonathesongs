@@ -73,13 +73,6 @@ nav button:hover {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-nav button.active-button {
-    border-bottom: 2px solid #d74497d5;
-    color: #fff;
-    background-color: #d74497c0;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 #song-list {
     width: 80%;
     margin-top: 40px;
