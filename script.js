@@ -67,10 +67,44 @@ $(document).ready(function () {
     
 
     // Mostrar video con animación
-    $(document).on("click", ".song-img", function () {
-        if ($("#video-overlay").length === 0 && $(this).parent().hasClass("resaltar")) { // Verifica que no haya otro video activo
+    // Filtrar canciones por subunidad y actualizar dinámicamente el cursor y la animación
+    $("nav button").click(function () {
+        $("nav button").removeClass("active-button");
+        $(this).addClass("active-button");
+
+        let subunit = $(this).text().toLowerCase();
+
+        $(".song-container").each(function () {
+            let cancionSubunit = $(this).data("subunit").toLowerCase();
+            let esResaltada = cancionSubunit === subunit;
+
+            $(this).toggleClass("resaltar", esResaltada);
+            $(this).toggleClass("noResaltada", !esResaltada);
+
+            // Modificar dinámicamente las imágenes dentro de .resaltar
+            let img = $(this).find(".song-img");
+            if (esResaltada) {
+                img.css({ cursor: "pointer", transition: "transform 0.3s ease" });
+            } else {
+                img.css({ cursor: "default", transform: "scale(1)" });
+            }
+        });
+    });
+
+    // Aplicar animación solo a imágenes dentro de ".resaltar"
+    $(document).on("mouseenter", ".resaltar .song-img", function () {
+        $(this).css("transform", "scale(1.1)");
+    });
+
+    $(document).on("mouseleave", ".resaltar .song-img", function () {
+        $(this).css("transform", "scale(1)");
+    });
+
+    // Mostrar video solo si la imagen pertenece a una canción resaltada
+    $(document).on("click", ".resaltar .song-img", function () {
+        if ($("#video-overlay").length === 0) {
             let videoUrl = $(this).parent().data("video").replace("youtu.be/", "www.youtube.com/embed/") + "?autoplay=1&controls=1&rel=0";
-    
+
             $("body").append(`
                 <div id="video-overlay">
                     <div id="video-container">
@@ -82,18 +116,19 @@ $(document).ready(function () {
                     <div id="close-instruction" class="instruction">Pulse Esc para cerrar</div>
                 </div>
             `);
-    
+
             let imgOffset = $(this).offset();
             $("#video-container").css({ position: "fixed", top: imgOffset.top, left: imgOffset.left, width: "0px", height: "0px" });
-    
+
             let finalWidth = $(window).width() * 0.5;
             let finalHeight = finalWidth * 0.5625;
             let finalTop = ($(window).height() - finalHeight) / 2;
             let finalLeft = ($(window).width() - finalWidth) / 2;
-    
+
             $("#video-container").animate({ top: finalTop, left: finalLeft, width: finalWidth, height: finalHeight }, 400);
         }
     });
+
     
 
     // Cerrar video con botón, fondo o tecla ESC
